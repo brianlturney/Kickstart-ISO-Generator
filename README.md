@@ -6,3 +6,5 @@ Rocky Linux
 CentOS
 RedHat Enterprise Linux
 and many other Fedora distros...
+
+This kickstart image generator is an elegant and fast way to securely auto-install Linux.
