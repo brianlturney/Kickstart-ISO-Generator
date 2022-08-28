@@ -85,14 +85,6 @@ def extract_iso():
     os.system(cmd)
     print(GREEN + "[ Ok ]" + BLUE + " Extraction Complete" + WHITE)
 
-answer = input("Skip ISO extraction? y or n") 
-if answer == "y": 
-    print("** Skipping ISO extraction **") 
-elif answer == "n":
-    extract_iso()
-else: 
-    print("Please enter yes or no.") 
-
 # Copy kickstart config
 print(GREEN + "[ Ok ]" + BLUE + "Copying kickstart config to extracted ISO" + WHITE)
 cmd = "cp -a " + CWD + KICKSTART_KS_CFG + " " + CWD + ISO_SOURCE_EXTRACT
@@ -175,7 +167,6 @@ print(GREEN + "[ Ok ]" + BLUE + " Hybridizing ISO" + WHITE)
 # Injecting MD5 hash
 cmd = "sudo implantisomd5 " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME
 print(GREEN + "[ Ok ]" + BLUE + " Embedding MD5 checksum" + WHITE)
-
 
 print("")
 print(GREEN + "[ Ok ]" + BLUE + " Kickstart ISO complete. The ISO file is located in the current working directory" + WHITE)
