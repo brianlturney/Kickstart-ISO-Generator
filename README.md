@@ -4,7 +4,7 @@
 
 # Description
 
-This kickstart image generator is an elegant and fast way to create custom ISOs automatically and securely to allow you to auto-install your favorite  Fedora linux (RHEL, CentOS, Rocky, etc) on hypervisors or bare metal.
+This kickstart ISO generator is an elegant and fast way to create custom ISOs automatically and securely to allow you to auto-install your favorite  Fedora linux (RHEL, CentOS, Rocky, etc) on hypervisors or bare metal.
 
 Compatible to run on:
 - ![Rocky Linux](https://img.shields.io/badge/-Rocky%20Linux-%2310B981?style=for-the-badge&logo=rockylinux&logoColor=white&style=flat) ![CentOS](https://img.shields.io/badge/cent%20os-002260?style=for-the-badge&logo=centos&logoColor=F0F0F0&style=flat) ![Red Hat Enterprise Linux](https://img.shields.io/badge/Red%20Hat-EE0000?style=for-the-badge&logo=redhat&logoColor=white&style=flat) ![Kali](https://img.shields.io/badge/Kali-268BEE?style=for-the-badge&logo=kalilinux&logoColor=white&style=flat) ![Fedora](https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white&style=flat) 
@@ -26,7 +26,9 @@ Compatible to customize ISOs for:
 2) Mount the ISO and extract
 3) Update the ISO with the advanced Kickstart auto install parameters
 4) Check which distribution you are running and choose the best commands to run for success
-5) Create a BIOS and UEFI hybrid bootable ISO
+5) Implant hybridization to the ISO
+6) Implant MD5 hash to the ISO
+7) Create a BIOS and UEFI hybrid bootable ISO
 
 # Options
 
