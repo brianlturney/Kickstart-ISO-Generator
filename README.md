@@ -55,6 +55,4 @@ By making simple edits to the Kickstart ks.cfg you can enable or disable options
 - Run 'sudo chmod +x ./kickstart_generator.py
 - Run 'sudo ./kickstart_generator.py
 
-# Disclaimer
-  ** These files are provided as-is with no warrantees or support. By using these files you accept all responsibility for any and all results from doing so. The author of these files is not responsible for your actions, results, edits, or otherwise from downloading these files. **
-  ** It is recommended that you use this in a test evironment or vm. **
+
