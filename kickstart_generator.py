@@ -140,7 +140,7 @@ dconf update
 #chage -M 99999 administrator
 
 # Password and security policies
-%anaconda
+#%anaconda
 #pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
 #pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
 #pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
