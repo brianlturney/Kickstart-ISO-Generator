@@ -152,7 +152,7 @@ if OS_DISTRO == "Fedora":
         cmd = "mkisofs -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
         os.system(cmd)
 
-if OS_DISTRO == "Kali
+if OS_DISTRO == "Kali":
     import importlib.util 
     is_present = importlib.util.find_spec(ISOPACKAGE) #find_spec will look for the package
     if is_present is None:
