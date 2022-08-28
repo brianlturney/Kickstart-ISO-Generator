@@ -52,6 +52,6 @@ By making simple edits to the Kickstart ks.cfg you can enable or disable options
 
 ![alt text](https://github.com/brianlturney/brianlturney/blob/main/kickstart_generator.png?raw=true)
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/brianlturney/brianlturney/blob/main/kickstart_generator_install.png?raw=true)
 
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+![alt text](https://github.com/brianlturney/brianlturney/blob/main/Rocky%20Linux%209.png?raw=true)
