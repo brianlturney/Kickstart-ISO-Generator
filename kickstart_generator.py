@@ -112,8 +112,6 @@ cmd = "sed -i 's@append initrd=initrd.img inst.stage2=hd:LABEL=" + ISO_LABEL + "
 os.system(cmd)
 cmd = "sed -i 's@append initrd=initrd.img inst.stage2=hd:LABEL=" + ISO_LABEL + " rd.live.check quiet@append initrd=initrd.img inst.text inst.ks=cdrom:/ks.cfg inst.stage2=hd:LABEL=" + ISO_LABEL + " rd.live.check@g' " + CWD + ISO_SOURCE_EXTRACT + "/isolinux/isolinux.cfg"
 os.system(cmd)
-# For uefi boot
-#cmd = "sed -i 's@set timeout=60@set timeout=0@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
 os.system(cmd)
 cmd = "sed -i 's@Install@Kickstart Install@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
 os.system(cmd)
@@ -125,10 +123,6 @@ cmd = "sed -i 's@inst.stage2=hd:LABEL=" + ISO_LABEL + " quiet@inst.ks=cdrom:/ks.
 os.system(cmd)
 cmd = "sed -i 's@inst.stage2=hd:LABEL=" + ISO_LABEL + " rd.live.check quiet@inst.ks=cdrom:/ks.cfg inst.stage2=hd:LABEL=" + ISO_LABEL + " rd.live.check@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
 os.system(cmd)
-#cmd = "sed -i 's@insmod ext2@insmod ext2 \rinsmod gfxterm \rterminal_output gfxterm \rinsmod gfxterm_background \rinsmod png \rloadfont /EFI/BOOT/fonts/unicode.pf2 \rbackground_image -m stretch /EFI/BOOT/splash.png@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
-#os.system(cmd)
-#cmd = "sed -i 's@/EFI/BOOT/grub.cfg@/EFI/BOOT/grub.cfg \r/EFI/BOOT/splash.png@g' " + CWD + ISO_SOURCE_EXTRACT + "/images/boot.iso.manifest"
-#os.system(cmd)
 
 # Check if kickstart ISO already exists
 if not os.path.exists(CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + ".iso"):
@@ -162,12 +156,11 @@ if OS_DISTRO == "Kali":
         cmd = "apt install " + ISOPACKAGE + " -y"
         os.system(cmd)
         print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
-        #cmd = "mkisofs -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -R -J -v " + CWD + ISO_SOURCE_EXTRACT
-        cmd = "mkisofs -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        cmd = "genisoimage -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
         os.system(cmd)
     else:
         print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
-        cmd = "mkisofs -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        cmd = "genisoimage -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
         os.system(cmd)
 
 # Unmount ISO
