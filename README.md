@@ -50,4 +50,8 @@ By making simple edits to the Kickstart ks.cfg you can enable or disable options
 - Run 'sudo chmod +x ./kickstart_generator.py
 - Run 'sudo ./kickstart_generator.py
 
+![alt text](https://github.com/brianlturney/brianlturney/blob/main/kickstart_generator.png?raw=true)
 
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+
+![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
