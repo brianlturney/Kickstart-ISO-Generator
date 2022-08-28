@@ -56,6 +56,10 @@ By making simple edits to the Kickstart ks.cfg you can enable or disable options
 - Run 'sudo chmod +x ./kickstart_generator.py
 - Run 'sudo ./kickstart_generator.py
 
+# Troubleshooting
+
+- The ks.cfg here looks for HDD as sda by default. For nvme0n1 type drives uncomment the corresponding lines in the ks.cfg and comment the sda lines.
+
 ![alt text](https://github.com/brianlturney/brianlturney/blob/main/kickstart_generator.png?raw=true)
 
 ![alt text](https://github.com/brianlturney/brianlturney/blob/main/kickstart_install_start.png?raw=true)
