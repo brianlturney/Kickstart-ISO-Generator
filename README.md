@@ -17,6 +17,9 @@ Compatible to customize ISOs for:
 - CentOS
 - Red Hat Enterprise Linux
 - Rocky Linux
+- and other Fedora distros...
+
+* This has not been engineered yet to run on Debian, Suse, and other non-Fedora distros.
 
 # Requirements
 
