@@ -1,4 +1,4 @@
-[![GitHub license](https://img.shields.io/github/license/brianlturney/Rocky-Linux-Kickstart-Image-Generator)](https://github.com/brianlturney/Rocky-Linux-Kickstart-Image-Generator/blob/main/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/brianlturney/Rocky-Linux-Kickstart-Image-Generator)](https://github.com/brianlturney/Rocky-Linux-Kickstart-Image-Generator/blob/main/LICENSE)   ![](https://komarev.com/ghpvc/?username=brianlturney)
 
 # Linux Kickstart ISO Generator
 
