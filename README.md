@@ -4,7 +4,7 @@
 
 # Description
 
-This kickstart image generator is an elegant and fast way to create custom ISOs automatically and securely to allow you to auto-install Fedora linux on hypervisors or bare metal.
+This kickstart image generator is an elegant and fast way to create custom ISOs automatically and securely to allow you to auto-install your favorite  Fedora linux (RHEL, CentOS, Rocky, etc) on hypervisors or bare metal.
 
 Compatible to run on:
 - Rocky Linux
