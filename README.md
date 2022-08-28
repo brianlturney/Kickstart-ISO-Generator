@@ -22,10 +22,10 @@ Compatible to customize ISOs for:
 
 # What it does
 
-1) Download the ISO you select
+1) It will download the ISO you select in the kickstart_generator.py
 2) Mount the ISO and extract
 3) Update the ISO with the advanced Kickstart auto install parameters
-4) Check which distribution you are running and choose the compatible pathway to success
+4) Check which distribution you are running and choose the best commands to run for success
 5) Create a BIOS and UEFI hybrid bootable ISO
 
 # Options
