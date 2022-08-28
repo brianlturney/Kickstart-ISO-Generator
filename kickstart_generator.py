@@ -40,11 +40,12 @@ with open("/etc/os-release") as distro:
             break           
         elif "debian" in line:
             OS_DISTRO = "Debian"
-            ISOPACKAGE="genisoimage"
+            ISOPACKAGE="mkisofs"
+            #ISOPACKAGE="genisoimage"
             break
         elif "kali" in line:
             OS_DISTRO = "Kali"
-            ISOPACKAGE="genisoimage"
+            ISOPACKAGE="mkisofs"
             break                                 
         else:
             OS_DISTRO = "This OS is not supported"
@@ -98,29 +99,6 @@ else:
 print(GREEN + "[ Ok ]" + BLUE + "Copying kickstart config to extracted ISO" + WHITE)
 cmd = "cp -a " + CWD + KICKSTART_KS_CFG + " " + CWD + ISO_SOURCE_EXTRACT
 os.system(cmd)
-cmd = "cp -a " + CWD + KICKSTART_SPLASH + " " + CWD + ISO_SOURCE_EXTRACT + "/isolinux"
-os.system(cmd)
-
-if not os.path.exists(CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/x86_64-efi"):   
-    # If not present then create it
-    print(ORANGE + "[ Creating ]" + WHITE + " Checking UEFI boot")
-    os.makedirs(CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/x86_64-efi")
-else:
-    print(GREEN + "[ Ok ]" + WHITE + " Checking UEFI boot")
-
-if not os.path.exists(CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/arm64-efi"):   
-    # If not present then create it
-    print(ORANGE + "[ Creating ]" + WHITE + " Checking BIOS boot")
-    os.makedirs(CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/arm64-efi")
-else:
-    print(GREEN + "[ Ok ]" + WHITE + " Checking BIOS directories")
-
-cmd = "cp -a " + CWD + KICKSTART_SPLASH + " " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT"
-os.system(cmd)
-cmd = "cp -a " + CWD + "gfxterm_background.mod" + " " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/x86_64-efi"
-os.system(cmd)
-cmd = "cp -a " + CWD + "gfxterm_background.mod" + " " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/arm64-efi"
-os.system(cmd)
 
 # Get the label of the ISO required for the isolinux.cfg file and the mkisfs command
 import subprocess
@@ -149,10 +127,6 @@ cmd = "sed -i 's@inst.stage2=hd:LABEL=" + ISO_LABEL + " quiet@inst.ks=cdrom:/ks.
 os.system(cmd)
 cmd = "sed -i 's@inst.stage2=hd:LABEL=" + ISO_LABEL + " rd.live.check quiet@inst.ks=cdrom:/ks.cfg inst.stage2=hd:LABEL=" + ISO_LABEL + " rd.live.check@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
 os.system(cmd)
-cmd = "sed -i 's@insmod ext2@insmod ext2 \rinsmod gfxterm \rterminal_output gfxterm \rinsmod gfxterm_background \rinsmod png \rloadfont /EFI/BOOT/fonts/unicode.pf2 \rbackground_image -m stretch /EFI/BOOT/splash.png@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
-os.system(cmd)
-cmd = "sed -i 's@/EFI/BOOT/grub.cfg@/EFI/BOOT/grub.cfg \r/EFI/BOOT/splash.png@g' " + CWD + ISO_SOURCE_EXTRACT + "/images/boot.iso.manifest"
-os.system(cmd)
 
 # Check if kickstart ISO already exists
 if not os.path.exists(CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + ".iso"):
@@ -178,9 +152,21 @@ if OS_DISTRO == "Fedora":
         cmd = "mkisofs -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
         os.system(cmd)
 
-
-
-
+if OS_DISTRO == "Kali
+    import importlib.util 
+    is_present = importlib.util.find_spec(ISOPACKAGE) #find_spec will look for the package
+    if is_present is None:
+        print(GREEN + "[ Ok ]" + BLUE + " Checking for ISO package handler" + WHITE)
+        cmd = "apt install " + ISOPACKAGE + " -y"
+        os.system(cmd)
+        print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
+        #cmd = "mkisofs -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -R -J -v " + CWD + ISO_SOURCE_EXTRACT
+        cmd = "mkisofs -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        os.system(cmd)
+    else:
+        print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
+        cmd = "mkisofs -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        os.system(cmd)
 
 
 # Unmount ISO
