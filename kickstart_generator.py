@@ -91,7 +91,7 @@ os.system(cmd)
 print(GREEN + "[ Ok ]" + BLUE + " Extraction Complete" + WHITE)
 
 # Copy kickstart config
-print(GREEN + "[ Ok ]" + BLUE + "Copying kickstart config to extracted ISO" + WHITE)
+print(GREEN + "[ Ok ]" + BLUE + " Copying kickstart config to extracted ISO" + WHITE)
 cmd = "cp -a " + CWD + KICKSTART_KS_CFG + " " + CWD + ISO_SOURCE_EXTRACT
 os.system(cmd)
 
@@ -182,7 +182,7 @@ os.system(cmd)
 cmd = "sudo isohybrid --uefi " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME
 print(GREEN + "[ Ok ]" + BLUE + " Hybridizing ISO" + WHITE)
 
-# Injecting MD5 hash
+# Implant MD5 hash
 cmd = "sudo implantisomd5 " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME
 print(GREEN + "[ Ok ]" + BLUE + " Embedding MD5 checksum" + WHITE)
 
