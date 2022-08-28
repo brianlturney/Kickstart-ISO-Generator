@@ -7,16 +7,17 @@
 This kickstart image generator is an elegant and fast way to create custom ISOs automatically and securely to allow you to auto-install your favorite  Fedora linux (RHEL, CentOS, Rocky, etc) on hypervisors or bare metal.
 
 Compatible to run on:
-- Rocky Linux
-- CentOS
-- RedHat Enterprise Linux
-- Kali
+- ![Rocky Linux](https://img.shields.io/badge/-Rocky%20Linux-%2310B981?style=for-the-badge&logo=rockylinux&logoColor=white)
+- ![Cent OS](https://img.shields.io/badge/cent%20os-002260?style=for-the-badge&logo=centos&logoColor=F0F0F0&style=flat)
+- ![Red Hat](https://img.shields.io/badge/Red%20Hat-EE0000?style=for-the-badge&logo=redhat&logoColor=white)
+- ![Kali](https://img.shields.io/badge/Kali-268BEE?style=for-the-badge&logo=kalilinux&logoColor=white)
+- ![Fedora](https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white)
 - and many other Fedora distros...
 
 Compatible to customize ISOs for:
 - ![Cent OS](https://img.shields.io/badge/cent%20os-002260?style=for-the-badge&logo=centos&logoColor=F0F0F0&style=flat)
-- Red Hat Enterprise Linux
-- Rocky Linux
+- ![Red Hat](https://img.shields.io/badge/Red%20Hat-EE0000?style=for-the-badge&logo=redhat&logoColor=white)
+- ![Rocky Linux](https://img.shields.io/badge/-Rocky%20Linux-%2310B981?style=for-the-badge&logo=rockylinux&logoColor=white)
 - and other Fedora distros...
 
 * This has not been engineered yet to run on Debian, Suse, and other non-Fedora distros.
