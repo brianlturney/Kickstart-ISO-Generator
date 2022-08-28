@@ -7,10 +7,8 @@ MIRROR_URL = "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/"
 SOURCE_ISO_NAME = "Rocky-9.0-x86_64-dvd.iso"
 #MIRROR_URL = "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/iso/"
 #SOURCE_ISO_NAME = "CentOS-Stream-9-latest-x86_64-dvd1.iso"
-
-
-https://developers.redhat.com/content-gateway/file/
-rhel-9.0-x86_64-dvd.iso
+#MIRROR_URL = "https://developers.redhat.com/content-gateway/file/""
+#SOURCE_ISO_NAME = "rhel-9.0-x86_64-dvd.iso"
 
 # Import the os module
 import os
