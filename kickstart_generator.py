@@ -1,13 +1,16 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #Linux Kickstart ISO Generator - Brian Turney 08-18-2022
 
 # Change the MIRROR_URL and SOURCE_ISO_NAME below. This script will automate the source ISO download, customization, and custom ISO creation
-#MIRROR_URL = "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/"
-#SOURCE_ISO_NAME = "Rocky-9.0-x86_64-dvd.iso"
+# You can also download your own ISO into the directory of this script and paste the name of that iso into the SOURCE_ISO_NAME line below without changing the URL
+MIRROR_URL = "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/"
+SOURCE_ISO_NAME = "Rocky-9.0-x86_64-dvd.iso"
 #MIRROR_URL = "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/iso/"
 #SOURCE_ISO_NAME = "CentOS-Stream-9-latest-x86_64-dvd1.iso"
-MIRROR_URL = "https://releases.ubuntu.com/22.04/"
-SOURCE_ISO_NAME = "ubuntu-22.04.1-desktop-amd64.iso"
+
+
+https://developers.redhat.com/content-gateway/file/
+rhel-9.0-x86_64-dvd.iso
 
 # Import the os module
 import os
@@ -108,7 +111,6 @@ cmd = "sed -i 's@append initrd=initrd.img inst.stage2=hd:LABEL=" + ISO_LABEL + "
 os.system(cmd)
 cmd = "sed -i 's@append initrd=initrd.img inst.stage2=hd:LABEL=" + ISO_LABEL + " rd.live.check quiet@append initrd=initrd.img inst.text inst.ks=cdrom:/ks.cfg inst.stage2=hd:LABEL=" + ISO_LABEL + " rd.live.check@g' " + CWD + ISO_SOURCE_EXTRACT + "/isolinux/isolinux.cfg"
 os.system(cmd)
-os.system(cmd)
 cmd = "sed -i 's@Install@Kickstart Install@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
 os.system(cmd)
 cmd = "sed -i 's@1@0@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
@@ -136,7 +138,7 @@ if OS_DISTRO == "Fedora":
         cmd = "yum install " + ISOPACKAGE + " -y"
         os.system(cmd)
         print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
-                cmd = "mkisofs -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        cmd = "mkisofs -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
         os.system(cmd)
     else:
         print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
@@ -164,21 +166,6 @@ if OS_DISTRO == "CentOS":
     if is_present is None:
         print(GREEN + "[ Ok ]" + BLUE + " Checking for ISO package handler" + WHITE)
         cmd = "yum install " + ISOPACKAGE + " -y"
-        os.system(cmd)
-        print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
-        cmd = "genisoimage -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
-        os.system(cmd)
-    else:
-        print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
-        cmd = "genisoimage -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
-        os.system(cmd)
-
-if OS_DISTRO == "Debian":
-    import importlib.util 
-    is_present = importlib.util.find_spec(ISOPACKAGE) #find_spec will look for the package
-    if is_present is None:
-        print(GREEN + "[ Ok ]" + BLUE + " Checking for ISO package handler" + WHITE)
-        cmd = "apt install " + ISOPACKAGE + " -y"
         os.system(cmd)
         print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
         cmd = "genisoimage -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
