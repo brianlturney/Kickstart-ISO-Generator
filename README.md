@@ -34,6 +34,7 @@ Compatible to customize ISOs for:
 5) Create a BIOS and UEFI hybrid bootable ISO
 
 # Options
+
 By making simple edits to the Kickstart ks.cfg you can enable or disable options such as:
 - Drive encryption
 - Users and passwords
@@ -46,3 +47,14 @@ By making simple edits to the Kickstart ks.cfg you can enable or disable options
 - Enable/disable automatic security updates
 - Hundreds of other options you can add from the Kickstart reference located at
   https://docs.fedoraproject.org/en-US/fedora/latest/install-guide/appendixes/Kickstart_Syntax_Reference/
+  
+# How to use
+
+- Run 'sudo git clone' for this git url
+- Run 'cd Kickstart-IOS-Generator'
+- Run 'sudo chmod +x ./kickstart_generator.py
+- Run 'sudo ./kickstart_generator.py
+
+# Disclaimer
+  ** This script is provided as-is with no warrantees or support. By running this script you accept all responsibility and any and all results from doing so. The author of these scripts is not responsible for your actions, results, edits, or otherwise from downloading these files.**
+  ** It is recommended that you use this in a test evironment or vm. **
