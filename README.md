@@ -13,6 +13,11 @@ Compatible to run on:
 - Kali
 - and many other Fedora distros...
 
+Compatible to customize ISOs for:
+- CentOS
+- Red Hat Enterprise Linux
+- Rocky Linux
+
 # Requirements
 
 - Python3
