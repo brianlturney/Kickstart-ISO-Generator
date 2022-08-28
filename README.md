@@ -1,5 +1,7 @@
 [![GitHub license](https://img.shields.io/github/license/brianlturney/Rocky-Linux-Kickstart-Image-Generator)](https://github.com/brianlturney/Kickstart-ISO-Generator/blob/main/LICENSE)   ![](https://komarev.com/ghpvc/?username=brianlturney)  ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54&style=flat)
 
+!\[my badge\](https://badgen.net/badge/Alma/Linux/blue)
+
 # Linux Kickstart ISO Generator
 
 # Description
