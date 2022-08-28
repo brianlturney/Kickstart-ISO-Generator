@@ -15,7 +15,7 @@ Compatible to run on:
 
 # Requirements
 
-Python3
+- Python3
 
 # What it does
 
