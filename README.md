@@ -6,6 +6,10 @@
 
 This kickstart ISO generator is a fully automated elegant way to create custom ISOs automatically and securely to allow you to auto-install your favorite Fedora linux (RHEL, CentOS, Rocky, etc) on hypervisors or bare metal.
 
+# Backstory
+
+I started this project to automate something I already know. Installing the Linux OS. After much research online into the 'Kickstart' feature of Fedora I saw very few implementations, and even fewer (well none really) that worked. And certainly none that were attempted using python. So liking a challenge and taking the road less traveled I started work on making this work. More than that really, I wanted to make it work with every flavor of Fedora I knew such as RHEL, CentOS, Alma, and Rocky Linux. The later of which has become my new favorite. Rocky Linux 9 is the new quick, bold and lean open source replacement for CentOS which RedHat has recently pulled from being open source. Back to 'Kickstart'. Riddled with poor documentation, bugs, and issues, many out there on the internet struggle with the kickstart feature of Fedora. This Git ends all that and not only solves the issues but makes it work smoothly with all your Fedora favorites. Enjoy! :D
+
 Compatible to run on:
 - ![Rocky Linux](https://img.shields.io/badge/-Rocky%20Linux-%2310B981?style=for-the-badge&logo=rockylinux&logoColor=white&style=flat) ![CentOS](https://img.shields.io/badge/cent%20os-002260?style=for-the-badge&logo=centos&logoColor=F0F0F0&style=flat) ![Red Hat Enterprise Linux](https://img.shields.io/badge/Red%20Hat-EE0000?style=for-the-badge&logo=redhat&logoColor=white&style=flat) ![Kali](https://img.shields.io/badge/Kali-268BEE?style=for-the-badge&logo=kalilinux&logoColor=white&style=flat) ![Fedora](https://img.shields.io/badge/Fedora-294172?style=for-the-badge&logo=fedora&logoColor=white&style=flat) 
 - and many other Fedora distros...
