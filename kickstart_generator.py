@@ -78,12 +78,11 @@ print(GREEN + "[ Ok ]" + BLUE + " Mounting source ISO" + WHITE)
 cmd = "mount " + CWD + SOURCE_ISO_NAME + " " + CWD + ISO_SOURCE_MOUNT
 os.system(cmd)
 
-def extract_iso():
-    # Extract ISO
-    print(GREEN + "[ Ok ]" + BLUE + " Extracting source ISO" + GREEN)
-    cmd = "rsync -a --info=progress2 --human-readable " + CWD + ISO_SOURCE_MOUNT + "/ " + CWD + ISO_SOURCE_EXTRACT + "/"
-    os.system(cmd)
-    print(GREEN + "[ Ok ]" + BLUE + " Extraction Complete" + WHITE)
+# Extract ISO
+print(GREEN + "[ Ok ]" + BLUE + " Extracting source ISO" + GREEN)
+cmd = "rsync -a --info=progress2 --human-readable " + CWD + ISO_SOURCE_MOUNT + "/ " + CWD + ISO_SOURCE_EXTRACT + "/"
+os.system(cmd)
+print(GREEN + "[ Ok ]" + BLUE + " Extraction Complete" + WHITE)
 
 # Copy kickstart config
 print(GREEN + "[ Ok ]" + BLUE + "Copying kickstart config to extracted ISO" + WHITE)
@@ -146,6 +145,21 @@ if OS_DISTRO == "Kali":
     if is_present is None:
         print(GREEN + "[ Ok ]" + BLUE + " Checking for ISO package handler" + WHITE)
         cmd = "apt install " + ISOPACKAGE + " -y"
+        os.system(cmd)
+        print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
+        cmd = "genisoimage -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        os.system(cmd)
+    else:
+        print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
+        cmd = "genisoimage -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        os.system(cmd)
+
+if OS_DISTRO == "CentOS":
+    import importlib.util 
+    is_present = importlib.util.find_spec(ISOPACKAGE) #find_spec will look for the package
+    if is_present is None:
+        print(GREEN + "[ Ok ]" + BLUE + " Checking for ISO package handler" + WHITE)
+        cmd = "yum install " + ISOPACKAGE + " -y"
         os.system(cmd)
         print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
         cmd = "genisoimage -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
