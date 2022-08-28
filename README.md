@@ -56,5 +56,5 @@ By making simple edits to the Kickstart ks.cfg you can enable or disable options
 - Run 'sudo ./kickstart_generator.py
 
 # Disclaimer
-  ** This script is provided as-is with no warrantees or support. By running this script you accept all responsibility and any and all results from doing so. The author of these scripts is not responsible for your actions, results, edits, or otherwise from downloading these files.**
+  ** These files are provided as-is with no warrantees or support. By using these files you accept all responsibility for any and all results from doing so. The author of these files is not responsible for your actions, results, edits, or otherwise from downloading these files. **
   ** It is recommended that you use this in a test evironment or vm. **
