@@ -7,7 +7,7 @@
 #MIRROR_URL = "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/iso/"
 #SOURCE_ISO_NAME = "CentOS-Stream-9-latest-x86_64-dvd1.iso"
 MIRROR_URL = "https://releases.ubuntu.com/22.04/"
-SOURCE_ISO_NAME = "	ubuntu-22.04.1-desktop-amd64.iso"
+SOURCE_ISO_NAME = "ubuntu-22.04.1-desktop-amd64.iso"
 
 # Import the os module
 import os
