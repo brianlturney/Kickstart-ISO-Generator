@@ -64,8 +64,6 @@ By making simple edits to the Kickstart ks.cfg you can enable or disable options
 
 ![alt text](https://github.com/brianlturney/brianlturney/blob/main/kickstart_install_start.png?raw=true)
 
-![alt text](https://github.com/brianlturney/brianlturney/blob/main/kickstart_install_start.png?raw=true)
-
 ![alt text](https://github.com/brianlturney/brianlturney/blob/main/kickstart_install_finish.png?raw=true)
 
 ![alt text](https://github.com/brianlturney/brianlturney/blob/main/Rocky%20Linux%209.png?raw=true)
