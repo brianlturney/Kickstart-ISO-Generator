@@ -4,7 +4,7 @@
 
 # Description
 
-This kickstart ISO generator is a fully automated elegant way to create custom ISOs automatically and securely to allow you to auto-install your favorite Fedora linux (RHEL, CentOS, Rocky, etc) on hypervisors or bare metal. To be clear, you make your choices in the ks.cfg file by uncommenting or adding lines you want/know, then you boot from it and go get coffee. Come back and your maching is a fully installed and configured masterpiece. :)
+This kickstart ISO generator is a fully automated elegant way to create custom ISOs automatically and securely to allow you to auto-install your favorite Fedora linux (RHEL, CentOS, Rocky, etc) on hypervisors or bare metal. To be clear, you make your choices in the ks.cfg file by uncommenting or adding lines you want/know, run the kickstart_generator.py, then you boot from the ISO it created and go get coffee. Come back and your maching is a fully installed and configured masterpiece. :)
 
 # Backstory
 
