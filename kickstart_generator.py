@@ -1,150 +1,194 @@
-#################################################################
-#								#
-#		Rocky Linux 9.0 (Blue Onyx)			#
-#								#
-#		Kickstart Auto-installer File			#
-#		created by: Brian Turney			#
-#		https://github.com/brianlturney			#
-#								#
-#################################################################
+#!/usr/bin/env python3
+#Linux Kickstart ISO Generator - Brian Turney 08-18-2022
 
-# System bootloader configuration
-# bootloader --append="crashkernel=auto" --location=mbr --boot-drive=nvme0n1 # Uncomment this line for nvme drives.
-bootloader --append=" crashkernel=auto" --location=mbr --boot-drive=sda 
+# Change the MIRROR_URL and SOURCE_ISO_NAME below. This script will automate the source ISO download, customization, and custom ISO creation
+# You can also download your own ISO into the directory of this script and paste the name of that iso into the SOURCE_ISO_NAME line below without changing the URL
+MIRROR_URL = "https://download.rockylinux.org/pub/rocky/9/isos/x86_64/"
+SOURCE_ISO_NAME = "Rocky-9.0-x86_64-dvd.iso"
+#MIRROR_URL = "http://mirror.stream.centos.org/9-stream/BaseOS/x86_64/iso/"
+#SOURCE_ISO_NAME = "CentOS-Stream-9-latest-x86_64-dvd1.iso"
+#MIRROR_URL = "https://developers.redhat.com/content-gateway/file/""
+#SOURCE_ISO_NAME = "rhel-9.0-x86_64-dvd.iso"
 
-# Partition clearing information
-#clearpart --all --drives=nvme0n1 --initlabel # Uncomment this line for nvme drives.
-clearpart --all --drives=sda
+# Import the os module
+import os
 
-# Partition information (To encrypt the partition add: --encrypted --luks-version=luks2 --passphrase=P@ssword)
-autopart --type=lvm
+#Clear the terminal
+cmd = "clear"
+os.system(cmd)
 
-# Manual partitioning: Disk partitioning information for a 1TB drive
-#part /boot --fstype="xfs" --ondisk=nvme0n1 --size=1024 --fsoptions="nosuid,nodev"
-#part /boot/efi --fstype="efi" --ondisk=nvme0n1 --size=600 --fsoptions="umask=0077,shortname=winnt,nodev"
-#part swap --fstype="swap" --ondisk=nvme0n1 --size=15384
-#part pv.4675 --fstype="lvmpv" --ondisk=nvme0n1 --size=958753
+#Assign color codes
+WHITE = '\x1b[1;37;40m'
+GREEN = '\x1b[1;32;40m'
+BLUE = '\x1b[1;36;40m'
+ORANGE = '\x1b[1;33;40m'
+RED = '\x1b[1;31;40m'
+RED_FLASHING = '\x1b[6;31;40m'
 
-# Use text install
-text
+# Set the projects working directories
+CWD = "./"
+KICKSTART_KS_CFG =  "ks.cfg"
+ISO_SOURCE_MOUNT = "mount"
+ISO_SOURCE_EXTRACT = "extract"
+KICKSTART_ISO_NAME = "Kickstart-"
 
-# Install source
-#url --url="http://iad.mirror.rackspace.com/rocky/9.0/BaseOS/x86_64/os/" #Musch Slower but still gets the job done.
-cdrom #FAST - Choose this option for a faster local install from cdrom or ISO.
+# Determine OS
+with open("/etc/os-release") as distro:
+    for line in distro:
+        if "centos" in line:
+            OS_DISTRO = "CentOS"
+            ISOPACKAGE="mkisofs"
+            break
+        elif "fedora" in line:
+            OS_DISTRO = "Fedora"
+            ISOPACKAGE="mkisofs"
+            break           
+        elif "debian" in line:
+            OS_DISTRO = "Debian"
+            ISOPACKAGE="mkisofs"
+            break
+        elif "kali" in line:
+            OS_DISTRO = "Kali"
+            ISOPACKAGE="mkisofs"
+            break                                 
+        else:
+            OS_DISTRO = "This OS is not supported"
+print(GREEN + "[ Ok ]" + WHITE + " Current Linux Distro: " + BLUE + OS_DISTRO)       
 
-# Keyboard layouts
-keyboard --vckeymap=us --xlayouts='us'
+# Check if the directories exist or not
+if not os.path.exists(CWD + ISO_SOURCE_MOUNT):   
+    # If not present then create it
+    print(ORANGE + "[ Creating ]" + WHITE + " Checking " + ISO_SOURCE_MOUNT + " directory")
+    os.makedirs(CWD + ISO_SOURCE_MOUNT)
+else:
+    print(GREEN + "[ Ok ]" + WHITE + " Checking " + ISO_SOURCE_MOUNT + " directory")
+if not os.path.exists(CWD + ISO_SOURCE_EXTRACT):   
+    # if not present then create it
+    print(ORANGE + "[ Creating ]" + WHITE + " Checking " + ISO_SOURCE_EXTRACT + " directory")
+    os.makedirs(CWD + ISO_SOURCE_EXTRACT)
+else:
+    print(GREEN + "[ Ok ]" + WHITE + " Checking " + ISO_SOURCE_EXTRACT + " directory")
 
-# System language
-lang en_US.UTF-8
+# Check if source ISO already exists
+if not os.path.exists(CWD + SOURCE_ISO_NAME):   
+    # If not present then create it.
+    print(RED + "[ Downloading ] " + WHITE + " Checking source iso file. Not found." + ORANGE)
+    cmd = "wget -O " + CWD + SOURCE_ISO_NAME + " " + MIRROR_URL + SOURCE_ISO_NAME + "  -q --show-progress"
+    os.system(cmd)
+    print(GREEN + "[ Ok ]" + GREEN + " Download Completed" + WHITE)
+else:
+    print(GREEN + "[ Ok ]" + WHITE + " Source ISO file already exists.")
 
-# License agreement
-eula --agreed
+# Mount ISO image
+print(GREEN + "[ Ok ]" + BLUE + " Mounting source ISO" + WHITE)
+cmd = "mount " + CWD + SOURCE_ISO_NAME + " " + CWD + ISO_SOURCE_MOUNT
+os.system(cmd)
 
-# Network information
-network --onboot=yes --bootproto=dhcp --noipv6 --activate --hostname=rockylinux-custom.localdomain
+# Extract ISO
+print(GREEN + "[ Ok ]" + BLUE + " Extracting source ISO" + GREEN)
+cmd = "rsync -a --info=progress2 --human-readable " + CWD + ISO_SOURCE_MOUNT + "/ " + CWD + ISO_SOURCE_EXTRACT + "/"
+os.system(cmd)
+print(GREEN + "[ Ok ]" + BLUE + " Extraction Complete" + WHITE)
 
-# To create user password hashes use the command: python3 -c 'import crypt,getpass; print(crypt.crypt(getpass.getpass()))'
-# The password below for both root and administrator users is P@ssword 
-# If you don't care about hashing the passwords (not recommended), simply use the lines below
-#Root password=P@ssword
+# Copy kickstart config
+print(GREEN + "[ Ok ]" + BLUE + " Copying kickstart config to extracted ISO" + WHITE)
+cmd = "cp -a " + CWD + KICKSTART_KS_CFG + " " + CWD + ISO_SOURCE_EXTRACT
+os.system(cmd)
 
-# Create root user
-rootpw --iscrypted $6$INireMy4ZLQwW7NN$btkLm/dwn9qV/XWW8dhDd2hjKHk8tj59q.Q8qSW7i4LojhPYWXDx4YRWxXQ/.30E8ND3IcImJ.pys3DyYwco0.
+# Get the label of the ISO required for the isolinux.cfg file and the mkisfs command
+import subprocess
+ISO_LABEL = str(subprocess.check_output("echo | grep -oP 'LABEL=+\K[^ ]+' " + CWD + ISO_SOURCE_EXTRACT + "/isolinux/isolinux.cfg | head -1", shell=True))
+ISO_LABEL = ISO_LABEL[:-3]
+ISO_LABEL = ISO_LABEL[2:]
+print(GREEN + "[ Ok ]" + BLUE + " The current ISO label is " + ISO_LABEL + WHITE)
 
-# Create additional users
-user --name=administrator --groups=dialout,kvm,libvirt,qemu,wheel --password=$6$f9y8RhpOf4kppQlt$FpXm5aOecAV8Hf9DQM4/gHMD.EPbkacI36OQEyS50Iqs0Y2fLnOWeEPGXDhaVZjHpNF4RhEdyRDxBDByffCGH/ --iscrypted --gecos="Administrator"
-#user --groups=dialout,kvm,libvirt,qemu,wheel --name=administrator --password=P@ssword --gecos="administrator"
+# Boot menu changes
+print(GREEN + "[ Ok ]" + BLUE + " Modifying boot parameters" + WHITE)
+# For bios boot
+cmd = "sed -i 's@append initrd=initrd.img inst.stage2=hd:LABEL=" + ISO_LABEL + " quiet@append initrd=initrd.img inst.text inst.ks=cdrom:/ks.cfg inst.stage2=hd:LABEL=" + ISO_LABEL + "@g' " + CWD + ISO_SOURCE_EXTRACT + "/isolinux/isolinux.cfg"
+os.system(cmd)
+cmd = "sed -i 's@append initrd=initrd.img inst.stage2=hd:LABEL=" + ISO_LABEL + " rd.live.check quiet@append initrd=initrd.img inst.text inst.ks=cdrom:/ks.cfg inst.stage2=hd:LABEL=" + ISO_LABEL + " rd.live.check@g' " + CWD + ISO_SOURCE_EXTRACT + "/isolinux/isolinux.cfg"
+os.system(cmd)
+cmd = "sed -i 's@Install@Kickstart Install@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
+os.system(cmd)
+cmd = "sed -i 's@1@0@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
+os.system(cmd)
+cmd = "sed -i 's@install@Kickstart Install Rocky Linux 9.0@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
+os.system(cmd)
+cmd = "sed -i 's@inst.stage2=hd:LABEL=" + ISO_LABEL + " quiet@inst.ks=cdrom:/ks.cfg inst.stage2=hd:LABEL=" + ISO_LABEL + "@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
+os.system(cmd)
+cmd = "sed -i 's@inst.stage2=hd:LABEL=" + ISO_LABEL + " rd.live.check quiet@inst.ks=cdrom:/ks.cfg inst.stage2=hd:LABEL=" + ISO_LABEL + " rd.live.check@g' " + CWD + ISO_SOURCE_EXTRACT + "/EFI/BOOT/grub.cfg"
+os.system(cmd)
 
-# Run the Setup Agent on first boot
-firstboot --disable
+# Check if kickstart ISO already exists
+if not os.path.exists(CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + ".iso"):
+    NOTHING = "do"
+else:
+    cmd = "rm -f " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + ".iso"
+    os.system(cmd)
 
-# X Window System configuration information
-xconfig  --startxonboot
+# Make kickstart ISO
+if OS_DISTRO == "Fedora":
+    import importlib.util 
+    is_present = importlib.util.find_spec(ISOPACKAGE) #find_spec will look for the package
+    if is_present is None:
+        print(GREEN + "[ Ok ]" + BLUE + " Checking for ISO package handler" + WHITE)
+        cmd = "yum install " + ISOPACKAGE + " -y"
+        os.system(cmd)
+        print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
+        cmd = "mkisofs -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        os.system(cmd)
+    else:
+        print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
+        cmd = "mkisofs -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -eltorito-platform efi -b images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        os.system(cmd)
 
-# System services
-services --enabled="chronyd"
+if OS_DISTRO == "Kali":
+    import importlib.util 
+    is_present = importlib.util.find_spec(ISOPACKAGE) #find_spec will look for the package
+    if is_present is None:
+        print(GREEN + "[ Ok ]" + BLUE + " Checking for ISO package handler" + WHITE)
+        cmd = "apt install " + ISOPACKAGE + " -y"
+        os.system(cmd)
+        print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
+        cmd = "genisoimage -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        os.system(cmd)
+    else:
+        print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
+        cmd = "genisoimage -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        os.system(cmd)
 
-# System timezone
-timezone America/Chicago --utc		# CST | UTC−06:00
+if OS_DISTRO == "CentOS":
+    import importlib.util 
+    is_present = importlib.util.find_spec(ISOPACKAGE) #find_spec will look for the package
+    if is_present is None:
+        print(GREEN + "[ Ok ]" + BLUE + " Checking for ISO package handler" + WHITE)
+        cmd = "yum install " + ISOPACKAGE + " -y"
+        os.system(cmd)
+        print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
+        cmd = "genisoimage -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        os.system(cmd)
+    else:
+        print(GREEN + "[ Ok ]" + BLUE + " Creating Kickstart ISO" + WHITE)
+        cmd = "genisoimage -relaxed-filenames -J -R -o " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME + " -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -V '" + ISO_LABEL + "' -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e images/efiboot.img -no-emul-boot " + CWD + ISO_SOURCE_EXTRACT
+        os.system(cmd)
 
-# Example timezone list
-#timezone America/Los_Angeles --utc	# PST | UTC−08:00
-#timezone America/Denver --utc		# MST | UTC−07:00
-#timezone America/Chicago --utc		# CST | UTC−06:00
-#timezone America/New_York --utc	# EST | UTC−05:00
-#timezone Australia/Sydney --utc	# UTC+10:00
-#timezone Australia/Perth --utc		# UTC+08:00
-#timezone Europe/Saratov --utc		# UTC+04:00
-#timezone Europe/London --utc		# UTC+00:00
-#timezone Asia/Hong_Kong --utc		# UTC+08:00
-#timezone Asia/Calcutta --utc		# UTC+05:30
+# Unmount ISO
+print(GREEN + "[ Ok ]" + BLUE + " Un-mounting source ISO" + WHITE)
+cmd = "umount " + CWD + ISO_SOURCE_MOUNT
+os.system(cmd)
 
-%packages
-@^workstation-product-environment
-createrepo
-dnf-automatic
-genisoimage
-isomd5sum
-kexec-tools
-libatomic
-liberation-fonts
-libuv
-libvirt
-libvirt-client
-libvirt-daemon
-libXScrnSaver
-nss-tools
-open-vm-tools
-open-vm-tools-desktop
-policycoreutils-python-utils
-qt5-qtquickcontrols
-qt5-qtx11extras
-syslinux
-virt-install
-virt-manager
-virt-viewer
-vulkan-loader
-yum-utils
-zstd
-%end
+# Making hybrid ISO
+cmd = "sudo isohybrid --uefi " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME
+print(GREEN + "[ Ok ]" + BLUE + " Hybridizing ISO" + WHITE)
 
-# The state of the machine after the install completes. Leave commented for no action.
-#shutdown
-#reboot
+# Implant MD5 hash
+cmd = "sudo implantisomd5 " + CWD + KICKSTART_ISO_NAME + SOURCE_ISO_NAME
+print(GREEN + "[ Ok ]" + BLUE + " Embedding MD5 checksum" + WHITE)
 
-# Post nochroot
-%post --interpreter=/usr/bin/bash --nochroot --log=/mnt/sysimage/root/ks-post.log
+print("")
+print(GREEN + "[ Ok ]" + BLUE + " Kickstart ISO complete. The ISO file is located in the current working directory" + WHITE)
+print("")
+print("** PROCESS COMPLETE **")
 
-# Configure SELinux
-setsebool -P domain_kernel_load_modules on
-
-# Enable Automatic security updates via dnf-automatic
-sed -i s/'upgrade_type = default'/'upgrade_type = security'/ /etc/dnf/automatic.conf
-sed -i s/'apply_updates = no'/'apply_updates = yes'/ /etc/dnf/automatic.conf
-systemctl enable dnf-automatic.timer
-
-# Bring network interfaces up
-#for i in $(nmcli -g NAME con show); do nmcli con up "$i"; done;
-
-# Install EPEL repository and packages
-dnf --nogpgcheck -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
-
-# DCONF update for GDM modifications
-dconf update
-
-# Optional: Lock root account
-#passwd -l root
-
-# Optional: Set user password age minimum
-#chage -M 99999 administrator
-
-# Password and security policies
-#%anaconda
-#pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
-#pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
-#pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
-#%end
-
-%end
-#################################################################
+# The end
